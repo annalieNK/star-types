@@ -1,0 +1,34 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py data/data.csv
+    deps:
+    - data/data.csv
+    - src/prepare.py
+    outs:
+    - data/prepared
+  train:
+    cmd: python src/train.py data/prepared model.pkl
+    deps:
+    - data/prepared
+    - src/train.py
+    params:
+    - train.model
+    - train.seed
+    - train.split
+    outs:
+    - model.pkl
+  evaluate:
+    cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv
+    deps:
+    - data/prepared
+    - model.pkl
+    - src/evaluate.py
+    params:
+    - evaluate.seed
+    - evaluate.split
+    metrics:
+    - scores.json:
+        cache: false
+    plots:
+    - predicted.csv:
+        cache: false
