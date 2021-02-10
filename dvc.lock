@@ -5,8 +5,8 @@ prepare:
     md5: 9501858625a46ac02f30ada4d4412355
     size: 8482
   - path: src/prepare.py
-    md5: c8c009017cb2bc624bc74309f6f8f855
-    size: 1140
+    md5: e46ff7ac7f01c11aec41ae5c3c72f8ec
+    size: 1177
   outs:
   - path: data/prepared
     md5: 955e35dacb9a0cd8db7008809ed2e7ff.dir
@@ -20,8 +20,8 @@ train:
     size: 13721
     nfiles: 1
   - path: src/train.py
-    md5: 99ea8c011ccaf6763797594788552a40
-    size: 1601
+    md5: 3a403fc45ad15be49acc7366850d5183
+    size: 1648
   params:
     params.yaml:
       train.model: logistic regression
@@ -29,7 +29,7 @@ train:
       train.split: 0.2
   outs:
   - path: model.pkl
-    md5: 50231d78ef3bbe2eb70b2881aca73d2d
+    md5: de92b51746c0f95a8eaef1a5a892a93c
     size: 5047
 evaluate:
   cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv
@@ -39,11 +39,11 @@ evaluate:
     size: 13721
     nfiles: 1
   - path: model.pkl
-    md5: 50231d78ef3bbe2eb70b2881aca73d2d
+    md5: de92b51746c0f95a8eaef1a5a892a93c
     size: 5047
   - path: src/evaluate.py
-    md5: a9d4784204c8e521fea52a88e23a3564
-    size: 2128
+    md5: a98e5ba8247bb7e3b6a0308c8a9ac26a
+    size: 1962
   params:
     params.yaml:
       evaluate.seed: 1
