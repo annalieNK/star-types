@@ -16,19 +16,22 @@ stages:
     - train.seed
     - train.split
     outs:
-    - model.pkl
+    - model/model.pkl
   evaluate:
-    cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv
+    cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv ROC_AUC_curve.png
     deps:
     - data/prepared
-    - model.pkl
+    - model/model.pkl
     - src/evaluate.py
     params:
+    - evaluate.model
     - evaluate.seed
     - evaluate.split
     metrics:
-    - scores.json:
+    - metrics/scores.json:
         cache: false
     plots:
-    - predicted.csv:
+    - plots/predicted.csv:
+        cache: false
+    - plots/ROC_AUC_curve.png:
         cache: false

@@ -7,6 +7,9 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.8.6"
 pandas = "^1.2.2"
+sklearn = "^0.0"
+matplotlib = "^3.3.4"
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"

@@ -1,0 +1,8 @@
+train:
+  split: 0.20
+  seed: 1
+  model: 'logistic regression'
+evaluate:
+  split: 0.20
+  seed: 1
+  model: 'logistic regression'
