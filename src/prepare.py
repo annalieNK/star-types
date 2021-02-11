@@ -12,20 +12,17 @@ output = os.path.join('data', 'prepared', 'data.pkl')
 
 def text_cleaning(input):
     df = pd.read_csv(input)
+
     # text cleaning
-    # all lower case
-    df['Star color'] = df['Star color'].apply(lambda x: x.lower())
-    # strip white spaces
-    df['Star color'] = df['Star color'].apply(lambda x: x.strip())
-    # remove '-'
-    df['Star color'] = df['Star color'].str.replace('-', ' ')
-    # replace string values
+    df['Star color'] = df['Star color'].apply(lambda x: x.lower()) # lower case
+    df['Star color'] = df['Star color'].apply(lambda x: x.strip()) # strip white spaces
+    df['Star color'] = df['Star color'].str.replace('-', ' ') # remove '-'
     df['Star color'] = df['Star color'].replace({
                                                 'yellowish white': 'white yellow', 
                                                 'yellow white': 'white yellow',
                                                 'yellowish': 'orange'
                                                 }
-                                                )
+                                                ) # replace string values
     return df
 
 

@@ -20,8 +20,8 @@ train:
     size: 13721
     nfiles: 1
   - path: src/train.py
-    md5: 97b8afb686b569223051f300b5761ed8
-    size: 1955
+    md5: 0fe926d22e42f943aec2fdb9870e54a0
+    size: 1946
   params:
     params.yaml:
       train.model: logistic regression
@@ -29,33 +29,24 @@ train:
       train.split: 0.2
   outs:
   - path: model/model.pkl
-    md5: 5797b7e91c7754c8c1ac39b6bd48486c
+    md5: 8917bd6f63eae1ef8f847c5ad01db7b6
     size: 6802
 evaluate:
-  cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv ROC_AUC_curve.png
+  cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png
+    ROC_AUC_curve.png
   deps:
   - path: data/prepared
     md5: 955e35dacb9a0cd8db7008809ed2e7ff.dir
     size: 13721
     nfiles: 1
   - path: model/model.pkl
-    md5: 5797b7e91c7754c8c1ac39b6bd48486c
+    md5: 8917bd6f63eae1ef8f847c5ad01db7b6
     size: 6802
   - path: src/evaluate.py
-    md5: 4b136bdf3e5fded524d2ae6542dae294
-    size: 2321
+    md5: 3628178968c7c700ac2b6022bcbfe5e8
+    size: 2552
   params:
     params.yaml:
       evaluate.model: logistic regression
       evaluate.seed: 1
       evaluate.split: 0.2
-  outs:
-  - path: metrics/scores.json
-    md5: 49a8b75a3a3ef50d3a0d56a45796be13
-    size: 68
-  - path: plots/ROC_AUC_curve.png
-    md5: 0b4de70fcfd914ed66880cf99e12c8b1
-    size: 58148
-  - path: plots/predicted.csv
-    md5: 8bfd236875aa2b414281c0ba454ce1f9
-    size: 1602

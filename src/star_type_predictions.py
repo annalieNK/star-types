@@ -8,28 +8,35 @@ from sklearn.compose import ColumnTransformer
 from sklearn.compose import make_column_selector as selector
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import plot_confusion_matrix, roc_auc_score
-import matplotlib.pyplot as plt
 import pickle
 import json
 import sys
+import os
+import pickle
+import csv
 
 
 class Model:
     
-    def __init__(self, datafile="../data/data.csv", model_type=None):
-        self.df = pd.read_csv(datafile)
-        self.df['Star color'] = self.df['Star color'].apply(lambda x: x.strip())
+    def __init__(self, datafolder=None, model_type=None):
+        datafolder = sys.argv[1] #data/prepared
+        self.df = pickle.load(open(os.path.join(datafolder, 'data.pkl'), 'rb'))
         
-        model_type = sys.argv[1]
+        model_type = sys.argv[2] #logistic_regression
         self.model_type = model_type
 
-        if model_type == 'rf':
+        if model_type == 'random_forest':
             self.ml_model = RandomForestClassifier()
-        else: 
+        elif model_type == 'logistic_regression': 
             self.ml_model = LogisticRegression()
 
+        os.makedirs('model', exist_ok=True)
+        self.model_filename = os.path.join('model', sys.argv[3]) #final_model.pkl
+
+        os.makedirs('predicted', exist_ok=True)
+        self.predictions_filename = os.path.join('predicted', 'predictions.csv')
     
+
     def prepocess(self):
         numeric_transformer = StandardScaler()
         categorical_transformer = OneHotEncoder(handle_unknown='ignore')
@@ -60,16 +67,16 @@ class Model:
 
     def gridsearch(self):
         
-        if self.model_type == 'rf':
+        if self.model_type == 'random_forest':
             param_grid = {
                 'classifier__n_estimators': [50, 100],
                 'classifier__max_features' :['sqrt', 'log2'],
                 'classifier__max_depth' : [4,6,8],
-                }
-        else:    
+            }
+        elif self.model_type == 'logistic_regression':    
             param_grid = {
                 'classifier__C': [0.1, 1.0, 10],
-                }
+            }
 
         self.grid_search = GridSearchCV(self.clf, param_grid, cv=10)
     
@@ -79,29 +86,14 @@ class Model:
 
 
     def save_model(self):
-        self.filename = '../model/saved_model.sav'
-        pickle.dump(self.model, open(self.filename, 'wb'))
+        self.model_filename
+        pickle.dump(self.model, open(self.model_filename, 'wb'))
 
 
     def predict(self):
-        loaded_model = pickle.load(open(self.filename, 'rb'))
-        result = loaded_model.score(self.X_test, self.y_test)
-
-        with open("../output/accuracy_score.json", 'w') as fd:
-            json.dump({
-                'parameters': loaded_model.best_params_,
-                'accuracy': result
-                },
-                fd)
-
-        if self.model_type == 'lr':
-            confusion_matrix = plot_confusion_matrix(
-                        self.grid_search, 
-                        self.X_test, self.y_test,
-                        cmap=plt.cm.Blues
-                        )
-            plt.savefig("../figures/confusion_matrix.png")
-        return result
+        loaded_model = pickle.load(open(self.model_filename, 'rb'))
+        predictions = loaded_model.predict(self.X_test)
+        pd.DataFrame(predictions, columns=['predicted']).to_csv(self.predictions_filename)
 
 
 if __name__ == '__main__':
@@ -112,4 +104,4 @@ if __name__ == '__main__':
     model_instance.gridsearch()
     model_instance.fit()
     model_instance.save_model()
-    print(model_instance.predict())
+    model_instance.predict()

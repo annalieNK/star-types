@@ -10,17 +10,16 @@ from sklearn.compose import make_column_selector as selector
 from sklearn.compose import make_column_transformer
 from sklearn.model_selection import GridSearchCV
 import sklearn.metrics as metrics
-from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve
+from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, plot_confusion_matrix, confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import label_binarize
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
 import matplotlib.pyplot as plt
 from itertools import cycle
+import seaborn as sns
 
-import plot_roc_auc
-
-# from sklearn.multiclass import OneVsRestClassifier
+import plots
 
 
 df = pd.read_csv('data/data.csv')
@@ -31,9 +30,9 @@ df['Star color'] = df['Star color'].apply(lambda x: x.strip())
 X = df[df.columns[:-1]]
 y = df['Spectral Class'].tolist()
 
-le = LabelEncoder()
-le.fit(y)
-y = le.transform(y) 
+# le = LabelEncoder()
+# le.fit(y)
+# y = le.transform(y) 
 
 # y = label_binarize(y, classes=[0, 1, 2, 3, 4, 5, 6])
 # n_classes = y.shape[1]
@@ -87,7 +86,7 @@ grid_search.fit(X_train, y_train)
 
 
 # # # ROC AUC score
-predictions = grid_search.predict_proba(X_test)
+# predictions = grid_search.predict_proba(X_test)
 
 # Binarize the output
 # y_test_binarized = label_binarize(y_test, classes=[0, 1, 2, 3, 4, 5, 6])
@@ -97,8 +96,18 @@ predictions = grid_search.predict_proba(X_test)
 # lb = LabelBinarizer()
 # y_test_binarized = lb.fit_transform(y_test)
 # print(y_test_binarized.shape)
-print(roc_auc_score(y_test, predictions, multi_class='ovr'))
+# print(roc_auc_score(y_test, predictions, multi_class='ovr'))
 
+# predictions = grid_search.decision_function(X_test)
+# n_classes = y_test.shape[1]
+
+# print(lb.inverse_transform(y_test)[:5])
+# fpr = dict()
+# tpr = dict()
+# roc_auc = dict()
+# for i in range(n_classes):
+    # fpr[i], tpr[i], threshold = roc_curve(y_test[:, i], predictions[:, i])
+    # roc_auc[i] = auc(fpr[i], tpr[i])
 
 # plot_roc_auc.roc_auc_multiclass(grid_search, X_test, n_classes, y_test)
 
@@ -109,3 +118,19 @@ print(roc_auc_score(y_test, predictions, multi_class='ovr'))
 #     writer = csv.writer(f)
 #     writer.writerow(["actual", "predicted"])
 #     writer.writerows(zip(y_test, predictions)) 
+
+# confusion_matrix = plot_confusion_matrix(
+#                             grid_search, 
+#                             X_test, lb.inverse_transform(y_test),
+#                             cmap=plt.cm.Blues
+#                             )
+# # with open(confusion_matrix_plots_file, 'w') as fd:
+# #     plt.savefig(fd)
+# plt.savefig('confusion_matrix.png')
+
+predictions = grid_search.predict(X_test)
+
+with open(confusion_matrix_plots_file, 'w') as fd:
+    plots.confusion_matrix_plot(lb.inverse_transform(y_test), lb.inverse_transform(predictions), lb.classes_)
+    plt.savefig(fd)
+

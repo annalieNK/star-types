@@ -18,7 +18,7 @@ stages:
     outs:
     - model/model.pkl
   evaluate:
-    cmd: python src/evaluate.py model.pkl data/prepared scores.json predicted.csv ROC_AUC_curve.png
+    cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png ROC_AUC_curve.png
     deps:
     - data/prepared
     - model/model.pkl
@@ -27,11 +27,3 @@ stages:
     - evaluate.model
     - evaluate.seed
     - evaluate.split
-    metrics:
-    - metrics/scores.json:
-        cache: false
-    plots:
-    - plots/predicted.csv:
-        cache: false
-    - plots/ROC_AUC_curve.png:
-        cache: false

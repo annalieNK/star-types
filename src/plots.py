@@ -1,12 +1,13 @@
 from itertools import cycle
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import roc_curve, auc, confusion_matrix
+import seaborn as sns
 
 
 def roc_auc_multiclass(model, X_test, y_test):
 
-    predictions = model.decision_function(X_test)
+    predictions = model.predict_proba(X_test)
     n_classes = y_test.shape[1]
 
     fpr = dict()
@@ -28,4 +29,15 @@ def roc_auc_multiclass(model, X_test, y_test):
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic for multi-class data')
     plt.legend(loc="lower right")
-    plt.savefig("plots/ROC_AUC_curve.png")
+    # plt.savefig("plots/ROC_AUC_curve_{}.png".format(model_type))
+
+def confusion_matrix_plot(y_test, predictions, classes):
+    cm = confusion_matrix(y_test, predictions)
+
+    ax = plt.subplot()
+    sns.heatmap(cm, annot=True, cmap="YlGnBu", ax=ax)
+    ax.set_xlabel('Predicted labels')
+    ax.set_ylabel('True labels')
+    ax.set_title('Confusion Matrix')
+    ax.xaxis.set_ticklabels(classes)
+    ax.yaxis.set_ticklabels(classes[::-1])

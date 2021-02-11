@@ -3,15 +3,13 @@ import os
 import pickle
 import json
 import yaml
-import csv
 
 from sklearn.model_selection import train_test_split
-import sklearn.metrics as metrics
 from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import plot_confusion_matrix, roc_auc_score
+from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 
-import plot_roc_auc
+import plots
 
 
 params = yaml.safe_load(open('params.yaml'))['evaluate']
@@ -21,9 +19,10 @@ model_type = params['model']
 
 model_file = os.path.join('model', sys.argv[1]) #model.pkl
 input = os.path.join(sys.argv[2], 'data.pkl') #data/prepared
-scores_file = os.path.join('metrics', sys.argv[3]) #scores.json
-plots_file = os.path.join('plots', sys.argv[4]) #predicted.csv
-roc_auc_plot_file = os.path.join('plots', sys.argv[5]) #ROC_AUC_curve.png
+scores_file = os.path.join('metrics', '{}_{}'.format(model_type, sys.argv[3])) #scores.json
+confusion_matrix_plots_file = os.path.join('plots', '{}_{}'.format(model_type, sys.argv[4])) #confusion_matrix.png
+roc_auc_plots_file = os.path.join('plots', '{}_{}'.format(model_type, sys.argv[5])) #ROC_AUC_curve.png
+
 
 with open(model_file, 'rb') as fd:
     model = pickle.load(fd)
@@ -41,11 +40,9 @@ y = lb.fit_transform(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, random_state=seed)
 
 
-# ROC AUC score
+# ROC AUC meric
 def return_roc_auc(X_test, y_test):
     predictions = model.predict_proba(X_test)
-    # # Binarize the output
-    # y_test_binarized = label_binarize(y_test, classes=[0, 1, 2, 3, 4, 5, 6])
     roc_auc = roc_auc_score(y_test, predictions, multi_class='ovr')
     return roc_auc
 
@@ -54,30 +51,28 @@ os.makedirs('metrics', exist_ok=True)
 with open(scores_file, 'w') as fd:
     json.dump({
         'model type': model_type,
-        'ROC AUC': return_roc_auc(X_test, y_test)}, fd)
+        'ROC AUC': return_roc_auc(X_test, y_test),
+        'best parameters': model.best_params_
+    }, 
+    fd
+    )
 
+## Create metric plots
 
-## Plot confusion matrix
-
-os.makedirs('plots', exist_ok=True)
-
-# confusion_matrix = plot_confusion_matrix(
-#                             model, 
-#                             X_test, y_test,
-#                             cmap=plt.cm.Blues
-#                             )
-# plt.savefig("figures/confusion_matrix.png")
-
+## Confusion matrix
 predictions = model.predict(X_test)
 
-with open(plots_file, 'w') as f:
-    writer = csv.writer(f)
-    writer.writerow(["actual", "predicted"])
-    writer.writerows(zip(y_test, predictions)) 
+with open(confusion_matrix_plots_file, 'w') as fd:
+    fig = plots.confusion_matrix_plot(
+            lb.inverse_transform(y_test), 
+            lb.inverse_transform(predictions), 
+            lb.classes_)
+    plt.savefig(confusion_matrix_plots_file)
 
-## ROC AUC Curve
-with open(roc_auc_plot_file, 'w') as fd:
-    plot_roc_auc.roc_auc_multiclass(model, X_test, y_test)
+# ROC AUC Curve
+with open(roc_auc_plots_file, 'w') as fd:
+    fig = plots.roc_auc_multiclass(model, X_test, y_test)
+    plt.savefig(roc_auc_plots_file)
 
 
-# python src/evaluate.py model.pkl data/prepared scores.json predicted.csv ROC_AUC_curve.png
+# python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png ROC_AUC_curve.png
