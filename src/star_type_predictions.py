@@ -93,7 +93,7 @@ class Model:
     def predict(self):
         loaded_model = pickle.load(open(self.model_filename, 'rb'))
         predictions = loaded_model.predict(self.X_test)
-        pd.DataFrame(predictions, columns=['predicted']).to_csv(self.predictions_filename)
+        pd.DataFrame(predictions, columns=['predicted']).to_csv(self.predictions_filename, index=False)
 
 
 if __name__ == '__main__':
