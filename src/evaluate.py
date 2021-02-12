@@ -59,20 +59,21 @@ with open(scores_file, 'w') as fd:
 
 ## Create metric plots
 
+# ROC AUC Curve
+with open(roc_auc_plots_file, 'w') as fd:
+    fig = plots.roc_auc_multiclass(X_test, y_test, model_type, model)
+    plt.savefig(roc_auc_plots_file)
+    plt.close()
+
 ## Confusion matrix
 predictions = model.predict(X_test)
 
 with open(confusion_matrix_plots_file, 'w') as fd:
     fig = plots.confusion_matrix_plot(
-            lb.inverse_transform(y_test), 
-            lb.inverse_transform(predictions), 
-            lb.classes_)
+                lb.inverse_transform(y_test), 
+                lb.inverse_transform(predictions), 
+                lb.classes_)
     plt.savefig(confusion_matrix_plots_file)
-
-# ROC AUC Curve
-with open(roc_auc_plots_file, 'w') as fd:
-    fig = plots.roc_auc_multiclass(model, X_test, y_test)
-    plt.savefig(roc_auc_plots_file)
-
+    plt.close()
 
 # python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png ROC_AUC_curve.png

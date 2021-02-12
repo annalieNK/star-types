@@ -5,8 +5,8 @@ prepare:
     md5: 9501858625a46ac02f30ada4d4412355
     size: 8482
   - path: src/prepare.py
-    md5: 1687eb2f303f334755d568687d0eea53
-    size: 1178
+    md5: 14b9e15966ed3f56c3089b9788e6d9ec
+    size: 1159
   outs:
   - path: data/prepared
     md5: 955e35dacb9a0cd8db7008809ed2e7ff.dir
@@ -20,17 +20,17 @@ train:
     size: 13721
     nfiles: 1
   - path: src/train.py
-    md5: 0fe926d22e42f943aec2fdb9870e54a0
-    size: 1946
+    md5: fe132c4796a0eb1f3235a29c392d2122
+    size: 2541
   params:
     params.yaml:
-      train.model: logistic regression
+      train.model: kneighbors
       train.seed: 1
       train.split: 0.2
   outs:
   - path: model/model.pkl
-    md5: 8917bd6f63eae1ef8f847c5ad01db7b6
-    size: 6802
+    md5: 4c7e66bf404ccc330f4ac80d9b42d9c9
+    size: 54487
 evaluate:
   cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png
     ROC_AUC_curve.png
@@ -40,13 +40,13 @@ evaluate:
     size: 13721
     nfiles: 1
   - path: model/model.pkl
-    md5: 8917bd6f63eae1ef8f847c5ad01db7b6
-    size: 6802
+    md5: 4c7e66bf404ccc330f4ac80d9b42d9c9
+    size: 54487
   - path: src/evaluate.py
-    md5: 3628178968c7c700ac2b6022bcbfe5e8
-    size: 2552
+    md5: 049e2731c0c665f5d2ce9142e8612d60
+    size: 2231
   params:
     params.yaml:
-      evaluate.model: logistic regression
+      evaluate.model: kneighbors
       evaluate.seed: 1
       evaluate.split: 0.2

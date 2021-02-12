@@ -5,9 +5,12 @@ from sklearn.metrics import roc_curve, auc, confusion_matrix
 import seaborn as sns
 
 
-def roc_auc_multiclass(model, X_test, y_test):
+def roc_auc_multiclass(X_test, y_test, model_type=None, model=None):
 
-    predictions = model.predict_proba(X_test)
+    if model_type in ['logistic regression', 'random forest', 'kneighbors']:
+        predictions = model.predict_proba(X_test)
+    elif model_type == 'support vector machine':
+        predictions = model.decision_function(X_test)
     n_classes = y_test.shape[1]
 
     fpr = dict()
