@@ -14,6 +14,7 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
 
 from transform import preprocess
+from parameters import parameters
 
 
 params = yaml.safe_load(open('params.yaml'))['train']
@@ -55,27 +56,7 @@ clf = Pipeline(
     )
 
 # print(clf.get_params().keys())  
-if model_type == 'random forest':
-    param_grid = {
-        'classifier__estimator__n_estimators': [50, 100],
-        'classifier__estimator__max_features' :['sqrt', 'log2'],
-        'classifier__estimator__max_depth' : [4,6,8]
-    }
-elif model_type == 'logistic regression':    
-    param_grid = {
-        'classifier__estimator__C': [0.1, 1.0, 10]
-    }
-elif model_type == 'support vector machine':
-    param_grid = {
-        'classifier__estimator__C': [0.1, 1.0, 10],
-        'classifier__estimator__kernel': ['linear'],
-        'classifier__estimator__probability': [True]
-    }
-elif model_type == 'kneighbors':
-    param_grid = {
-        'classifier__estimator__n_neighbors': [1, 3, 5],
-        'classifier__estimator__weights': ['uniform', 'distance']
-    }
+param_grid = parameters(model_type)
 
 grid_search = GridSearchCV(clf, param_grid, cv=10)
 

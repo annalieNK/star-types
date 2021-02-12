@@ -20,8 +20,8 @@ train:
     size: 13721
     nfiles: 1
   - path: src/train.py
-    md5: fe132c4796a0eb1f3235a29c392d2122
-    size: 2541
+    md5: 0b8c6bc823ddac4aca97af142d594e91
+    size: 1845
   params:
     params.yaml:
       train.model: kneighbors
@@ -29,7 +29,7 @@ train:
       train.split: 0.2
   outs:
   - path: model/model.pkl
-    md5: 4c7e66bf404ccc330f4ac80d9b42d9c9
+    md5: 53af685b4c6a9e496ddd1e1e174af29f
     size: 54487
 evaluate:
   cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png
@@ -40,7 +40,7 @@ evaluate:
     size: 13721
     nfiles: 1
   - path: model/model.pkl
-    md5: 4c7e66bf404ccc330f4ac80d9b42d9c9
+    md5: 53af685b4c6a9e496ddd1e1e174af29f
     size: 54487
   - path: src/evaluate.py
     md5: 049e2731c0c665f5d2ce9142e8612d60
