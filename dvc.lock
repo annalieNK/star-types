@@ -29,7 +29,7 @@ train:
       train.split: 0.2
   outs:
   - path: model/model.pkl
-    md5: 53af685b4c6a9e496ddd1e1e174af29f
+    md5: 02f84e5e799075b27f6e6312704fb7f7
     size: 54487
 evaluate:
   cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png
@@ -40,7 +40,7 @@ evaluate:
     size: 13721
     nfiles: 1
   - path: model/model.pkl
-    md5: 53af685b4c6a9e496ddd1e1e174af29f
+    md5: 02f84e5e799075b27f6e6312704fb7f7
     size: 54487
   - path: src/evaluate.py
     md5: 049e2731c0c665f5d2ce9142e8612d60

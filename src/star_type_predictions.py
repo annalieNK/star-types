@@ -18,20 +18,14 @@ import csv
 
 class Model:
     
-    def __init__(self, datafolder=None, model_type=None):
+    def __init__(self, datafolder=None):
         datafolder = sys.argv[1] #data/prepared
         self.df = pickle.load(open(os.path.join(datafolder, 'data.pkl'), 'rb'))
         
-        model_type = sys.argv[2] #logistic_regression
-        self.model_type = model_type
-
-        if model_type == 'random_forest':
-            self.ml_model = RandomForestClassifier()
-        elif model_type == 'logistic_regression': 
-            self.ml_model = LogisticRegression()
+        self.ml_model = LogisticRegression()
 
         os.makedirs('model', exist_ok=True)
-        self.model_filename = os.path.join('model', sys.argv[3]) #final_model.pkl
+        self.model_filename = os.path.join('model', sys.argv[2]) #final_model.pkl
 
         os.makedirs('predicted', exist_ok=True)
         self.predictions_filename = os.path.join('predicted', 'predictions.csv')
@@ -67,16 +61,9 @@ class Model:
 
     def gridsearch(self):
         
-        if self.model_type == 'random_forest':
-            param_grid = {
-                'classifier__n_estimators': [50, 100],
-                'classifier__max_features' :['sqrt', 'log2'],
-                'classifier__max_depth' : [4,6,8],
-            }
-        elif self.model_type == 'logistic_regression':    
-            param_grid = {
-                'classifier__C': [0.1, 1.0, 10],
-            }
+        param_grid = {
+            'classifier__C': [0.1, 1.0, 10],
+        }
 
         self.grid_search = GridSearchCV(self.clf, param_grid, cv=10)
     
@@ -105,3 +92,5 @@ if __name__ == '__main__':
     model_instance.fit()
     model_instance.save_model()
     model_instance.predict()
+
+# python src/star_type_predictions.py data/prepared final_model.pkl
