@@ -19,9 +19,9 @@ model_type = params['model']
 
 model_file = os.path.join('model', sys.argv[1]) #model.pkl
 input = os.path.join(sys.argv[2], 'data.pkl') #data/prepared
-scores_file = os.path.join('metrics', '{}_{}'.format(model_type, sys.argv[3])) #scores.json
-confusion_matrix_plots_file = os.path.join('plots', '{}_{}'.format(model_type, sys.argv[4])) #confusion_matrix.png
-roc_auc_plots_file = os.path.join('plots', '{}_{}'.format(model_type, sys.argv[5])) #ROC_AUC_curve.png
+scores_file = os.path.join('reports', 'metrics', '{}_{}'.format(model_type, sys.argv[3])) #scores.json
+confusion_matrix_plots_file = os.path.join('reports', 'plots', '{}_{}'.format(model_type, sys.argv[4])) #confusion_matrix.png
+roc_auc_plots_file = os.path.join('reports', 'plots', '{}_{}'.format(model_type, sys.argv[5])) #ROC_AUC_curve.png
 
 
 with open(model_file, 'rb') as fd:
@@ -46,7 +46,9 @@ def return_roc_auc(X_test, y_test):
     roc_auc = roc_auc_score(y_test, predictions, multi_class='ovr')
     return roc_auc
 
-os.makedirs('metrics', exist_ok=True)
+os.makedirs('reports', exist_ok=True)
+
+os.makedirs('reports/metrics', exist_ok=True)
 
 with open(scores_file, 'w') as fd:
     json.dump({
@@ -58,6 +60,8 @@ with open(scores_file, 'w') as fd:
     )
 
 ## Create metric plots
+
+os.makedirs('reports/plots', exist_ok=True)
 
 # ROC AUC Curve
 with open(roc_auc_plots_file, 'w') as fd:

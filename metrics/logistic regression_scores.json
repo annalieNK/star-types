@@ -1,1 +1,0 @@
-{"model type": "logistic regression", "ROC AUC": 0.9046303986710963, "best parameters": {"classifier__estimator__C": 100}}

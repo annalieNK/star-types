@@ -32,7 +32,6 @@ def roc_auc_multiclass(X_test, y_test, model_type=None, model=None):
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic for multi-class data')
     plt.legend(loc="lower right")
-    # plt.savefig("plots/ROC_AUC_curve_{}.png".format(model_type))
 
 def confusion_matrix_plot(y_test, predictions, classes):
     cm = confusion_matrix(y_test, predictions)
