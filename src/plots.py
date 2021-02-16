@@ -42,4 +42,4 @@ def confusion_matrix_plot(y_test, predictions, classes):
     ax.set_ylabel('True labels')
     ax.set_title('Confusion Matrix')
     ax.xaxis.set_ticklabels(classes)
-    ax.yaxis.set_ticklabels(classes[::-1])
+    ax.yaxis.set_ticklabels(classes)

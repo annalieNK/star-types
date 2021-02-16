@@ -1,1 +1,1 @@
-{"model type": "kneighbors", "ROC AUC": 0.9075269933554818, "best parameters": {"classifier__estimator__n_neighbors": 3, "classifier__estimator__weights": "distance"}}
+{"model type": "kneighbors", "ROC AUC": 0.9125103820598007, "best parameters": {"classifier__estimator__max_depth": 6, "classifier__estimator__max_features": "sqrt", "classifier__estimator__n_estimators": 100}}

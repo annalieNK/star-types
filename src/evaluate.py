@@ -39,7 +39,6 @@ y = lb.fit_transform(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, random_state=seed)
 
-
 # ROC AUC meric
 def return_roc_auc(X_test, y_test):
     predictions = model.predict_proba(X_test)
