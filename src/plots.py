@@ -5,13 +5,25 @@ from sklearn.metrics import roc_curve, auc, confusion_matrix
 import seaborn as sns
 
 
+def confusion_matrix_plot(y_test, predictions, classes):
+    cm = confusion_matrix(y_test, predictions)
+
+    ax = plt.subplot()
+    sns.heatmap(cm, annot=True, cmap="YlGnBu", ax=ax)
+    ax.set_xlabel('Predicted labels')
+    ax.set_ylabel('True labels')
+    ax.set_title('Confusion Matrix')
+    ax.xaxis.set_ticklabels(classes)
+    ax.yaxis.set_ticklabels(classes)
+
+
 def roc_auc_multiclass(X_test, y_test, model_type=None, model=None):
 
     if model_type in ['logistic regression', 'random forest', 'kneighbors']:
         predictions = model.predict_proba(X_test)
     elif model_type == 'support vector machine':
         predictions = model.decision_function(X_test)
-    n_classes = y_test.shape[1]
+    n_classes = y_test.shape[1] 
 
     fpr = dict()
     tpr = dict()
@@ -33,13 +45,3 @@ def roc_auc_multiclass(X_test, y_test, model_type=None, model=None):
     plt.title('Receiver operating characteristic for multi-class data')
     plt.legend(loc="lower right")
 
-def confusion_matrix_plot(y_test, predictions, classes):
-    cm = confusion_matrix(y_test, predictions)
-
-    ax = plt.subplot()
-    sns.heatmap(cm, annot=True, cmap="YlGnBu", ax=ax)
-    ax.set_xlabel('Predicted labels')
-    ax.set_ylabel('True labels')
-    ax.set_title('Confusion Matrix')
-    ax.xaxis.set_ticklabels(classes)
-    ax.yaxis.set_ticklabels(classes)

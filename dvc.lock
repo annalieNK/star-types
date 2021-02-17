@@ -20,8 +20,8 @@ train:
     size: 13721
     nfiles: 1
   - path: src/train.py
-    md5: 0b8c6bc823ddac4aca97af142d594e91
-    size: 1845
+    md5: ccc17e486afcd534aabb87cf451e9591
+    size: 1844
   params:
     params.yaml:
       train.model: random forest
@@ -29,8 +29,8 @@ train:
       train.split: 0.2
   outs:
   - path: model/model.pkl
-    md5: f5aa82c01de7f42db423dcaf25fdb3a1
-    size: 354367
+    md5: fe177249ac60efc26b8bb8ddd01e038b
+    size: 272543
 evaluate:
   cmd: python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png
     ROC_AUC_curve.png
@@ -40,11 +40,11 @@ evaluate:
     size: 13721
     nfiles: 1
   - path: model/model.pkl
-    md5: f5aa82c01de7f42db423dcaf25fdb3a1
-    size: 354367
+    md5: fe177249ac60efc26b8bb8ddd01e038b
+    size: 272543
   - path: src/evaluate.py
-    md5: 5b1f56d228c7e092489c8f94d8e07616
-    size: 2355
+    md5: 97ce0124331bb261d2ada13466a4306d
+    size: 2314
   params:
     params.yaml:
       evaluate.model: random forest

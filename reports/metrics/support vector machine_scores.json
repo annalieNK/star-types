@@ -1,1 +1,1 @@
-{"model type": "support vector machine", "ROC AUC": 0.8897632890365449, "best parameters": {"classifier__estimator__C": 10, "classifier__estimator__kernel": "linear", "classifier__estimator__probability": true}}
+{"model type": "support vector machine", "Accuracy Score": 0.9791666666666666, "best parameters": {"classifier__estimator__C": 10, "classifier__estimator__kernel": "linear", "classifier__estimator__probability": true}}

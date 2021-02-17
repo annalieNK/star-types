@@ -1,1 +1,1 @@
-{"model type": "random forest", "ROC AUC": 0.9151681893687709, "best parameters": {"classifier__estimator__max_depth": 4, "classifier__estimator__max_features": "sqrt", "classifier__estimator__n_estimators": 50}}
+{"model type": "random forest", "Accuracy Score": 1.0, "best parameters": {"classifier__estimator__max_depth": 4, "classifier__estimator__max_features": "sqrt", "classifier__estimator__n_estimators": 50}}

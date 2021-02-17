@@ -40,11 +40,11 @@ with open(os.path.join(input, 'data.pkl'), 'rb') as fd:
     df = pickle.load(fd)
 
 X = df[df.columns[:-1]]
-y = df['Spectral Class']
+y = df['Star type']
 
 # convert classes to binaries
-lb = LabelBinarizer()
-y = lb.fit_transform(y)
+# lb = LabelBinarizer()
+# y = lb.fit_transform(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, random_state=seed)
 
