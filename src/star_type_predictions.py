@@ -28,7 +28,7 @@ class Model:
         self.model_filename = os.path.join('model', sys.argv[2]) #final_model.pkl
 
         os.makedirs('predicted', exist_ok=True)
-        self.predictions_filename = os.path.join('predicted', 'predictions.csv')
+        self.predictions_filename = os.path.join('predicted', sys.argv[3]) #predictions.csv
     
 
     def prepocess(self):
@@ -55,7 +55,7 @@ class Model:
 
     def split(self, test_size):
         X = self.df[self.df.columns[:-1]]
-        y = self.df['Spectral Class']
+        y = self.df['Star type']
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=test_size, random_state=1)
        
 
@@ -93,4 +93,4 @@ if __name__ == '__main__':
     model_instance.save_model()
     model_instance.predict()
 
-# python src/star_type_predictions.py data/prepared final_model.pkl
+# python src/star_type_predictions.py data/prepared final_model.pkl predictions.csv
