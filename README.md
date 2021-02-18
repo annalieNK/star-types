@@ -53,9 +53,11 @@ To predict the type of a star run the makefile in the root folder. This file run
 # Usage
 
 An example of the Herzsprung-Russell Diagram can be found in the below figure. Where the yellow dot denotes our sun as a reference point. We clearly see that star types follow a sphere and are grouped together in terms of their temperature and absolute magnitude. 
+
 ![H-R diagram](https://github.com/annalieNK/star-types/blob/main/figures/hr_diagram.png?raw=true) 
 
 Below figure shows a correlation matrix of the numerical variables used in the dataset. From this matrix we find that the absolute magnitude is higly correlated with the type of the star, where on a scale of 1-6 1 denotes a dwarf star abd 6 denotes a hyper giant star. 
+
 ![Correlation Matrix](https://github.com/annalieNK/star-types/blob/main/figures/correlation_matrix.png?raw=true) 
 
 
