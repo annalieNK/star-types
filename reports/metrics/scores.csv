@@ -1,0 +1,5 @@
+Classifier,Accuracy,Best parameters,Run time
+Support Vector Machine,1.0,"{'classifier': SVC(C=10, kernel='linear', probability=True), 'classifier__C': 10, 'classifier__kernel': 'linear', 'classifier__probability': True}",0.273
+KNeighbors,1.0,"{'classifier': KNeighborsClassifier(n_neighbors=3, weights='distance'), 'classifier__n_neighbors': 3, 'classifier__weights': 'distance'}",0.303
+Logistic Regression,1.0,"{'classifier': LogisticRegression(C=10), 'classifier__C': 10}",0.424
+Random Forest,1.0,"{'classifier': RandomForestClassifier(max_depth=4, max_features='sqrt', n_estimators=50), 'classifier__max_depth': 4, 'classifier__max_features': 'sqrt', 'classifier__n_estimators': 50}",5.811

@@ -24,18 +24,36 @@ confusion_matrix_plots_file = os.path.join('reports', 'plots', '{}_{}'.format(mo
 roc_auc_plots_file = os.path.join('reports', 'plots', '{}_{}'.format(model_type, sys.argv[5])) #ROC_AUC_curve.png
 
 
-with open(model_file, 'rb') as fd:
-    model = pickle.load(fd)
+def split_dataset(df):
+    X = df[df.columns[:-1]]
+    y = df['Star type']
 
-with open(input, 'rb') as fd:
-    df = pickle.load(fd)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, random_state=seed)
 
-X = df[df.columns[:-1]]
-y = df['Star type']
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, random_state=seed)
+    return X_train, X_test, y_train, y_test
 
 
+# Confusion matrix
+def plot_confusion_matrix(model, X_test, confusion_matrix_plots_file, y_test):
+    predictions = model.predict(X_test)
+    with open(confusion_matrix_plots_file, 'w') as fd:
+        fig = plots.confusion_matrix_plot(y_test, predictions, [0,1,2,3,4,5])
+        plt.savefig(confusion_matrix_plots_file)
+        plt.close()
+
+
+# ROC AUC Curve
+def plot_roc_auc(y_test, roc_auc_plots_file, X_test, model_type, model):
+    # convert classes to binaries
+    lb = LabelBinarizer()
+    y_test = lb.fit_transform(y_test)
+
+    with open(roc_auc_plots_file, 'w') as fd:
+        fig = plots.roc_auc_multiclass(X_test, y_test, model_type, model)
+        plt.savefig(roc_auc_plots_file)
+        plt.close()
+
+    
 ## Metrics
 
 # # ROC AUC metric
@@ -45,8 +63,16 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split, rando
 #     return roc_auc
 
 os.makedirs('reports', exist_ok=True)
-
 os.makedirs('reports/metrics', exist_ok=True)
+os.makedirs('reports/plots', exist_ok=True)
+
+with open(model_file, 'rb') as fd:
+    model = pickle.load(fd)
+
+with open(input, 'rb') as fd:
+    df = pickle.load(fd)
+
+X_train, X_test, y_train, y_test = split_dataset(df)
 
 with open(scores_file, 'w') as fd:
     json.dump({
@@ -57,27 +83,10 @@ with open(scores_file, 'w') as fd:
     fd
     )
 
-## Create metric plots
+# Create metric plots
+plot_confusion_matrix(model, X_test, confusion_matrix_plots_file, y_test)
+plot_roc_auc(y_test, roc_auc_plots_file, X_test, model_type, model)
 
-os.makedirs('reports/plots', exist_ok=True)
 
-# Confusion matrix
-predictions = model.predict(X_test)
-
-with open(confusion_matrix_plots_file, 'w') as fd:
-    fig = plots.confusion_matrix_plot(y_test, predictions, [0,1,2,3,4,5])
-    plt.savefig(confusion_matrix_plots_file)
-    plt.close()
-
-# ROC AUC Curve
-
-# convert classes to binaries
-lb = LabelBinarizer()
-y_test = lb.fit_transform(y_test)
-
-with open(roc_auc_plots_file, 'w') as fd:
-    fig = plots.roc_auc_multiclass(X_test, y_test, model_type, model)
-    plt.savefig(roc_auc_plots_file)
-    plt.close()
 
 # python src/evaluate.py model.pkl data/prepared scores.json confusion_matrix.png ROC_AUC_curve.png
