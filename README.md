@@ -12,7 +12,7 @@ From exploratory analysis we will see that stars follow a certain graph in the c
 This repository is organized as follows: 
 
 In the `src/` folder you find a file to prepare the data for training the model, a file to train and save the model, and a file to evaluate the results of the model. These results are written to the folder metrics/ which contains both scores and model output as well as a confusion matrix and ROC AUC curve. 
-The `src/` folder also contains the full code in the file star_type_predictions.py. This file writes the predictions to the corresponding file in the predicted/ folder.
+The `src/` folder also contains the full code in the file star_type_predictions.py. This file runs a hypertuning function on four classification models, stores each estimator, outputs the accuracy score of each estimator and writes the predictions of the best performing model to the corresponding file in the predicted/ folder.
 
 The exploratory analysis is also located in the `src/` folder. 
 
@@ -45,7 +45,7 @@ To replicate an experiment run the below line of code. This code will run the pi
 ```dvc repro --no-commit```
 
 
-To predict the type of a star run the makefile in the root folder. This file runs two stages: the data preparation phase and the run phase. For this step it is not necessary to have the dependencies already installed, this is included in the makefile.
+To predict the type of a star and store the results in a file run the makefile in the root folder. This file runs two stages: the data preparation phase and the run phase which outputs a file with predictions. For this step it is not necessary to have the dependencies already installed, this is included in the makefile.
 
 ```make```
 
