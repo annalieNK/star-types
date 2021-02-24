@@ -176,7 +176,18 @@ class Model:
         
         # Predict target variable and write to csv file
         predictions = best_model.predict(self.X_test)
-        pd.DataFrame(predictions, columns=['predicted']).to_csv(self.predictions_filename, index=False)
+        df = pd.DataFrame(predictions, columns=['predicted'])
+        df['predicted'].map({
+                            0: 'Brown Dwarf', 
+                            1: 'Red Dwarf', 
+                            2: 'White Dwarf', 
+                            3: 'Main Sequence', 
+                            4: 'Supergiant', 
+                            5: 'Hypergiant'
+                            },
+                            inplace=True
+                            )
+        df.to_csv(self.predictions_filename, index=False)
 
 
 if __name__ == '__main__':
